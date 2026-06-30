@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+.obsidian/
+
+# Your personal interview workspace should NOT live in this repo.
+# Keep profile.md, knowledge-base/, and data/ in a separate private directory.
+/workspace/
+/my-workspace/

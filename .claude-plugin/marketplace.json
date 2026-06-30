@@ -1,0 +1,32 @@
+{
+  "name": "interview-trainer",
+  "id": "interview-trainer",
+  "owner": {
+    "name": "Dora0512"
+  },
+  "metadata": {
+    "description": "A general-purpose interview training officer for tech roles, built from a battle-tested personal interview system.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "interview-trainer",
+      "source": "./",
+      "description": "Mock interviews, debriefs, progressive L1-L5 drilling, capability tracking, pipeline management, and resume tailoring — one /interview command, modular skills underneath.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Dora0512"
+      },
+      "keywords": [
+        "interview",
+        "interview-prep",
+        "mock-interview",
+        "career",
+        "coaching",
+        "tech-interview",
+        "resume"
+      ],
+      "category": "workflow"
+    }
+  ]
+}

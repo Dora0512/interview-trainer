@@ -1,0 +1,30 @@
+{
+  "name": "interview-trainer",
+  "description": "A personal interview training officer for tech roles: mock interviews, post-interview debriefs, progressive L1-L5 skill drilling, a self-updating capability profile, pipeline tracking, and resume tailoring — all driven by one /interview command.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Dora0512"
+  },
+  "homepage": "https://github.com/Dora0512/interview-trainer",
+  "license": "MIT",
+  "keywords": [
+    "interview",
+    "interview-prep",
+    "mock-interview",
+    "career",
+    "coaching",
+    "tech-interview",
+    "resume"
+  ],
+  "skills": [
+    "./skills/interview",
+    "./skills/interview-setup",
+    "./skills/mock-interview",
+    "./skills/interview-debrief",
+    "./skills/interview-prep",
+    "./skills/deep-review",
+    "./skills/review-skill",
+    "./skills/interview-coach",
+    "./skills/resume-tailor"
+  ]
+}
