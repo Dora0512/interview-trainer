@@ -1,0 +1,60 @@
+name: guard
+
+# Guards the public repo against three classes of mistakes:
+#   1. Real personal / employer data accidentally committed
+#   2. Broken skill frontmatter (name / description / user_invocable)
+#   3. Invalid plugin / marketplace JSON
+#
+# The de-personalization scan excludes .github/ so the block-list patterns
+# in this file don't match themselves.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: De-personalization scan
+        shell: bash
+        run: |
+          # These strings identify the original author's real identity / employer
+          # and must NEVER appear anywhere in this public repo (examples included).
+          BLOCK='梁建华|biligame|andruid|AllCategoryGameList|B站|70W'
+          if grep -rInE "$BLOCK" . --exclude-dir=.git --exclude-dir=.github ; then
+            echo "::error::Found real personal/employer strings above. De-personalize before committing."
+            exit 1
+          fi
+          echo "OK: no real personal/employer strings found."
+
+      - name: Validate skill frontmatter
+        shell: bash
+        run: |
+          fail=0
+          for f in skills/*/SKILL.md; do
+            for key in name description user_invocable; do
+              grep -q "^${key}:" "$f" || { echo "::error::$f missing frontmatter key: ${key}"; fail=1; }
+            done
+          done
+          if [ "$fail" -eq 0 ]; then echo "OK: all skills have valid frontmatter."; fi
+          exit $fail
+
+      - name: Validate plugin JSON
+        shell: bash
+        run: |
+          python3 -c "import json; json.load(open('.claude-plugin/plugin.json'))" && echo "OK: plugin.json"
+          python3 -c "import json; json.load(open('.claude-plugin/marketplace.json'))" && echo "OK: marketplace.json"
+
+      - name: Check plugin.json skill paths exist
+        shell: bash
+        run: |
+          fail=0
+          for p in $(python3 -c "import json;[print(s) for s in json.load(open('.claude-plugin/plugin.json'))['skills']]"); do
+            test -f "${p}/SKILL.md" || { echo "::error::plugin.json references ${p} but ${p}/SKILL.md is missing"; fail=1; }
+          done
+          if [ "$fail" -eq 0 ]; then echo "OK: all plugin.json skill paths resolve."; fi
+          exit $fail
