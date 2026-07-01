@@ -102,8 +102,9 @@ hybrid roles — you define your own topic taxonomy and company styles in `knowl
 
 - [Architecture](docs/architecture.md) — the three layers and how the feedback loops fit together.
 - [Customization](docs/customization.md) — define your own topics, company styles, methodologies.
-- An example workspace lives in [`examples/android-senior-demo/`](examples/android-senior-demo/)
-  (a fictional candidate — copy its shape, not its content).
+- [Example workspaces](examples/) — fictional filled-in workspaces for **Android, Backend, Frontend,
+  and Data Engineering** roles. They show the engine is role-agnostic: only the config layer changes.
+  Copy the shape, not the content.
 
 ### Privacy
 
@@ -195,7 +196,8 @@ Interview Trainer 在技术岗内**领域无关**。后端、前端、移动、�
 
 - [架构](docs/zh/architecture.md) —— 三层结构和反馈回路如何拼合。
 - [定制](docs/zh/customization.md) —— 定义你自己的话题、公司风格、方法论。
-- 示例工作区在 [`examples/android-senior-demo/`](examples/android-senior-demo/)（虚构候选人——学它的结构，别照搬内容）。
+- [示例工作区](examples/) —— **Android / 后端 / 前端 / 数据工程** 四个岗位的虚构工作区，
+  证明引擎领域无关：只有配置层不同。学结构，别照搬内容。
 
 ### 隐私
 
