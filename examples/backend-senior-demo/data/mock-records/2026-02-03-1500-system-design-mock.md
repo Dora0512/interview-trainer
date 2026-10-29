@@ -1,3 +1,16 @@
+---
+type: mock
+date: 2026-02-03
+time: "15:00"
+style: system-design
+company: Meridian
+topics: [话题6, 话题3]
+score: 73
+self_score: 80
+top_level: L3
+pass_estimate: 65
+---
+
 # Mock Interview — 2026-02-03 (FICTIONAL DEMO)
 
 ## Basics

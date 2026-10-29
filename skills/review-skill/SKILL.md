@@ -32,6 +32,8 @@ user_invocable: true
 | 真实面试记录 | `data/records/**/*.md` |
 | 能力画像 | `data/capability-profile.md` |
 
+> **数据格式**：所有读写遵循插件根目录（与 `skills/` 同级）的 `docs/workspace-schema.md`——日期一律 `YYYY-MM-DD`、状态/层级单元格只放枚举值、记录文件带 YAML front-matter、准备度/漏斗/校准按其公式重算。
+
 ## 执行步骤
 
 1. **定位技能点**：从 `knowledge-base/topics.md` 找对应技能完整内容（掌握内容/能回答问题/达标判定/项目实践/简历关联）。

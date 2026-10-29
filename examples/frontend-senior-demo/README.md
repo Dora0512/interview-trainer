@@ -17,7 +17,10 @@ frontend-senior-demo/
 └── data/
     ├── pipeline.md
     ├── capability-profile.md
-    └── mock-records/2026-02-10-perf-mock.md
+    ├── records/Canvas/2026-02-10-Canvas-R2.md
+    └── mock-records/
+        ├── 2026-02-10-1700-system-design-mock.md
+        └── progress.md
 ```
 
 Try it: `cp -r examples/frontend-senior-demo ~/fe-demo && cd ~/fe-demo`, then `/interview status`.

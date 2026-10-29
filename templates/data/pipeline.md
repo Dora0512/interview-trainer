@@ -1,7 +1,8 @@
 # 面试管线追踪 / Interview Pipeline
 
-> 自动维护。每次 `/interview debrief`、`/interview apply`、`/interview status` 时更新。
+> 自动维护。每次 `/interview debrief`、`/interview apply` 时更新。
 > 查看：`/interview status`
+> 格式：日期一律 `YYYY-MM-DD`；轮次单元格写 `日期 + ✅/❌/⏳`（⏳ = 已约/待结果）或 `—`；状态列只放 🟢/🟡/🔴 + 一个标签词，说明写备注列。
 
 ---
 
@@ -32,7 +33,7 @@
 
 ## 漏斗统计
 
-> 每次更新后从上方表格重算，不保留旧数字。
+> 每次更新后从上方表格重算，不保留旧数字。投递 = 行数；其余各轮 = 该轮单元格有日期且标记为 ✅/❌ 的行数（⏳ 不计）。
 
 投递 0 → 一面 0 → 二面 0 → 三面 0 → HR 0 → Offer 0
 

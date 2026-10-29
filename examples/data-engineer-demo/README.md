@@ -17,7 +17,10 @@ data-engineer-demo/
 └── data/
     ├── pipeline.md
     ├── capability-profile.md
-    └── mock-records/2026-03-04-pipeline-mock.md
+    ├── records/Streamline/2026-03-04-Streamline-R2.md
+    └── mock-records/
+        ├── 2026-03-04-1600-data-driven-mock.md
+        └── progress.md
 ```
 
 Try it: `cp -r examples/data-engineer-demo ~/de-demo && cd ~/de-demo`, then `/interview status`.

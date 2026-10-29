@@ -6,6 +6,7 @@ target: Data platform / analytics infra, Senior or Staff level
 resume_path: ./resume.md
 resume_dir: ./resumes/tailored
 language: en
+as_of: 2026-03-05   # freezes "today" for this fictional demo (see docs/workspace-schema.md §1)
 ---
 
 # Candidate Profile (FICTIONAL DEMO)

@@ -98,6 +98,23 @@ mkdir my-interview-prep && cd my-interview-prep
 Each sub-skill is also callable directly: `/mock-interview`, `/interview-debrief`, `/deep-review`,
 `/review-skill`, `/interview-coach`, `/interview-prep`, `/resume-tailor`.
 
+### Web dashboard + practice room
+
+`web/` is a local Next.js app on top of the same workspace files:
+
+- **Dashboard** — readiness, funnel, topic × level ladder, weak spots by root cause, calibration
+  drift, mock score trend, records and knowledge base, plus the navigator's recommended next steps.
+- **Practice with AI** — run the mock-interview and debrief skills in the browser (Claude API),
+  then review a diff and save the results back to your workspace.
+
+```bash
+cd web && npm install
+WORKSPACE_DIR=~/my-interview-prep npm run dev   # omit WORKSPACE_DIR to browse the demos
+```
+
+Details: [web/README.md](web/README.md). Every file format the skills write is pinned down in
+[docs/workspace-schema.md](docs/workspace-schema.md); `npm run check -- <workspace>` validates a workspace.
+
 ### Customize it for your role
 
 Interview Trainer is **role-agnostic within tech**. Backend, frontend, mobile, data, infra, PM-ish
@@ -107,6 +124,7 @@ hybrid roles — you define your own topic taxonomy and company styles in `knowl
 ### Docs
 
 - [Architecture](docs/architecture.md) — the three layers and how the feedback loops fit together.
+- [Workspace schema](docs/workspace-schema.md) — exact file formats, enums and formulas (readiness, funnel, calibration).
 - [Customization](docs/customization.md) — define your own topics, company styles, methodologies.
 - [Example workspaces](examples/) — fictional filled-in workspaces for **Android, Backend, Frontend,
   and Data Engineering** roles. They show the engine is role-agnostic: only the config layer changes.
@@ -197,6 +215,23 @@ mkdir my-interview-prep && cd my-interview-prep
 每个子 skill 也可独立调用：`/mock-interview`、`/interview-debrief`、`/deep-review`、`/review-skill`、
 `/interview-coach`、`/interview-prep`、`/resume-tailor`。
 
+### Web 看板 + AI 练习室
+
+`web/` 是基于同一工作区文件的本地 Next.js 应用：
+
+- **看板** —— 准备度、漏斗、话题 × 层级阶梯、按根因的薄弱点、校准漂移、模拟分趋势、记录与知识库，
+  以及智能导航的「推荐下一步」。
+- **AI 练习** —— 在浏览器里跑 mock-interview 和 debrief skill（Claude API），结束后看 diff 确认，
+  再把结果写回你的工作区。
+
+```bash
+cd web && npm install
+WORKSPACE_DIR=~/my-interview-prep npm run dev   # 不设 WORKSPACE_DIR 则浏览示例工作区
+```
+
+详见 [web/README.md](web/README.md)。skill 写入的所有文件格式统一定义在
+[docs/zh/workspace-schema.md](docs/zh/workspace-schema.md)；`npm run check -- <工作区>` 可校验工作区。
+
 ### 按你的岗位定制
 
 Interview Trainer 在技术岗内**领域无关**。后端、前端、移动、数据、基础架构、偏产品的混合岗都行——
@@ -205,6 +240,7 @@ Interview Trainer 在技术岗内**领域无关**。后端、前端、移动、�
 ### 文档
 
 - [架构](docs/zh/architecture.md) —— 三层结构和反馈回路如何拼合。
+- [工作区数据规范](docs/zh/workspace-schema.md) —— 文件格式、枚举值和计算公式（准备度、漏斗、校准）。
 - [定制](docs/zh/customization.md) —— 定义你自己的话题、公司风格、方法论。
 - [示例工作区](examples/) —— **Android / 后端 / 前端 / 数据工程** 四个岗位的虚构工作区，
   证明引擎领域无关：只有配置层不同。学结构，别照搬内容。

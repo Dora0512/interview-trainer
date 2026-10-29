@@ -6,6 +6,7 @@ target: Product-heavy web apps / design tools, Senior level
 resume_path: ./resume.md
 resume_dir: ./resumes/tailored
 language: en
+as_of: 2026-02-11   # freezes "today" for this fictional demo (see docs/workspace-schema.md §1)
 ---
 
 # Candidate Profile (FICTIONAL DEMO)

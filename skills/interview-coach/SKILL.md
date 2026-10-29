@@ -29,6 +29,8 @@ user_invocable: true
 | 深度追问清单 | `knowledge-base/deep-dive-questions.md` |
 | 项目知识图谱（如有） | `knowledge-base/guides/*.md` |
 
+> **数据格式**：所有读写遵循插件根目录（与 `skills/` 同级）的 `docs/workspace-schema.md`——日期一律 `YYYY-MM-DD`、状态/层级单元格只放枚举值、记录文件带 YAML front-matter、准备度/漏斗/校准按其公式重算。
+
 ## 强制回答结构
 
 每个回答必须包含以下 7 个部分：

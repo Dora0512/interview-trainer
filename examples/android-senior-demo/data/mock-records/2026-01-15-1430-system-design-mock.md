@@ -1,3 +1,15 @@
+---
+type: mock
+date: 2026-01-15
+time: "14:30"
+style: system-design
+topics: [话题5, 话题4]
+score: 71
+self_score: 78
+top_level: L3
+pass_estimate: 65
+---
+
 # Mock Interview — 2026-01-15 14:30 (FICTIONAL DEMO)
 
 ## Basics

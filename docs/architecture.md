@@ -69,6 +69,32 @@ everything    ──► /interview reads pipeline + profile + records to recomme
 A weak spot exposed in a Tuesday interview automatically becomes a targeted drill on Wednesday and a
 navigator recommendation until you close it.
 
+## Workspace schema
+
+Every table and record the skills write has a fixed shape — bilingual column names, ISO dates,
+pure-emoji status cells, YAML front-matter on records — defined once in
+[workspace-schema.md](workspace-schema.md), together with the formulas for readiness, the funnel,
+calibration and the mock composite score. Skills reference it instead of re-describing formats, and
+CI (`web` job in `.github/workflows/guard.yml`) validates the example workspaces, the data templates
+and every skill's path table against it.
+
+## Web interface
+
+`web/` is a second front-end over the same three layers:
+
+```
+skills/*.md ──(system prompt)──► web/api/session ──► Claude ──► chat in the browser
+workspace/*  ──(parsed by web/src/lib/workspace)──► dashboard pages
+                                  ▲
+               Save to workspace: model proposes full files → user reviews diff → write → re-validate
+```
+
+- **Read path**: `web/src/lib/workspace/` parses a workspace into typed data, recomputes the funnel,
+  readiness and staleness, raises data alerts, and ports the router's P0–P3 navigator rules.
+- **Write path**: browser sessions never edit files directly. At the end, the model proposes full new
+  file contents through a tool call, the user reviews line diffs, and only `data/**.md` and
+  `knowledge-base/star-stories.md` can be written. Demo workspaces are read-only.
+
 ## Data-consistency discipline
 
 State files can drift (you edit one, forget another). The engine treats sources of truth in a fixed

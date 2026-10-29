@@ -39,6 +39,8 @@ user_invocable: true
 | 该公司定制简历 | `profile.md` 中简历目录下的 `*<公司>*.md`（如有） |
 | 跨面试分析（如有） | `data/analytics.md` |
 
+> **数据格式**：所有读写遵循插件根目录（与 `skills/` 同级）的 `docs/workspace-schema.md`——日期一律 `YYYY-MM-DD`、状态/层级单元格只放枚举值、记录文件带 YAML front-matter、准备度/漏斗/校准按其公式重算。
+
 ---
 
 ## 执行流程
@@ -128,4 +130,14 @@ user_invocable: true
 只输出准备度评分表（预测话题 | 你的水平 | 目标 | 状态）+ 综合准备度 + 核心短板 + 1-2 个最高优先级 `/interview review` 命令。
 
 ## 输出文件
-保存到 `data/prep/YYYY-MM-DD-<公司>-面试准备.md`。同一公司已有准备文档时，新文档命名区分轮次。
+保存到 `data/prep/YYYY-MM-DD-<公司>-<轮次>-prep.md`（轮次 `R1`/`R2`/`R3`/`HR`）。文件开头加 front-matter：
+
+```yaml
+---
+type: prep
+company: <公司>
+round: R<n>
+date: YYYY-MM-DD      # 生成日期
+readiness: XX         # 本轮准备度 0-100
+---
+```

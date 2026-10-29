@@ -21,8 +21,10 @@ android-senior-demo/
 └── data/
     ├── pipeline.md                     # populated funnel
     ├── capability-profile.md           # populated topic matrix + weak spots
-    ├── records/Acme/Acme-round2.md     # a real-interview debrief record
-    └── mock-records/2026-01-15-mock.md # a mock interview record
+    ├── records/Acme/2026-01-10-Acme-R2.md               # a real-interview debrief record
+    └── mock-records/
+        ├── 2026-01-15-1430-system-design-mock.md        # a mock interview record
+        └── progress.md                                  # mock score history
 ```
 
 To try the engine against this example, copy this directory somewhere private and run Claude Code

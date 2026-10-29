@@ -96,7 +96,10 @@ user_invocable: true
 创建 `data/` 下空种子文件（带表头，从模板拷或按附录生成）：
 - `data/pipeline.md`（管线表头 + 阶段定义）
 - `data/capability-profile.md`（话题矩阵：从阶段 2 的 topics.md 自动生成每个话题一行，状态 🔲 待测；通用能力评估表；准备度判定区；薄弱点追踪表）
-- `data/mock-records/`、`data/records/`、`data/prep/`、`data/deep-review-records/`（空目录，放 `.gitkeep`）
+- `data/mock-records/progress.md`（模拟进度表头）
+- `data/records/`、`data/prep/`、`data/deep-review-records/`（空目录，放 `.gitkeep`）
+
+所有生成文件遵循插件 `docs/workspace-schema.md`（日期 `YYYY-MM-DD`、矩阵 `#` 列 = 话题编号、状态列只放图标）。
 
 ### 阶段 6：收尾
 
@@ -120,7 +123,7 @@ user_invocable: true
 
 ## 附录：文件结构规范（兜底生成用）
 
-定位不到插件模板时，按以下骨架生成（具体字段见 `templates/` 对应文件）：
+定位不到插件模板时，按以下骨架生成（具体字段见 `templates/` 对应文件，表格列与枚举以 `docs/workspace-schema.md` 为准）：
 
 - **profile.md**：frontmatter（`name` / `role` / `years` / `target` / `resume_path` / `resume_dir` / `language`）+ 正文区块：身份背景、核心项目、**量化数据锁定区**（逐条列出 `指标名：数字`）、目标与薪资、自我介绍要点。
 - **knowledge-base/topics.md**：每个话题含 编号、话题名、分类、掌握内容、能回答问题、达标判定、目标 L 级、简历关联、STAR 引用；文件头标注核心话题集合。
@@ -128,6 +131,6 @@ user_invocable: true
 - **knowledge-base/methodologies.md**：通用方法论（答题三步法、量化数据五步法、问题侦查时间线叙事），每条含「何时用 + 步骤」。
 - **knowledge-base/analogy-bank.md / star-stories.md / deep-dive-questions.md / diagrams.md**：带 1 个示例 + 空位的模板。
 - **knowledge-base/company-styles/<archetype>.md**：各轮侧重 / 追问风格 / 高频题型 / 核心特征。
-- **data/pipeline.md / capability-profile.md**：带表头的空表（参照 mock-interview / interview-debrief skill 中描述的列结构）。
+- **data/pipeline.md / capability-profile.md / mock-records/progress.md**：带表头的空表（列结构见 `docs/workspace-schema.md` §5 / §6 / §7）。
 
 写入任何文件前，先**列出将创建/修改的文件清单**让用户确认，再执行。

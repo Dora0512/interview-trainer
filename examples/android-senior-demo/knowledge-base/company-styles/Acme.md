@@ -21,4 +21,4 @@
 2. Every optimization needs before/after numbers
 
 ## Real assessment log (auto-filled by debrief)
-- 2026-01-10 (Round 2): asked deep on crash governance (话题3, reached L4) and feed FPS (话题2, L3 — couldn't fully explain RenderThread). See `data/records/Acme/Acme-round2.md`.
+- 2026-01-10 (Round 2): asked deep on crash governance (话题3, reached L4) and feed FPS (话题2, L3 — couldn't fully explain RenderThread). See `data/records/Acme/2026-01-10-Acme-R2.md`.

@@ -9,6 +9,8 @@
 - **Anchor line**: "I turned cold per-item player creation into a warm, pooled, prefetched pipeline."
 - **Project block**: module `feed/player/` | class `PlayerPool`, `FeedVideoAdapter` | design: object pool + prefetch
 - **Follow-ups**: ① how prove +9% is yours → A/B vs control ② pool sizing → tuned by device tier
+- **Strength**: S
+- **Usage**: —
 
 ### Story 2: Crash governance program
 - **Topic**: 话题3
@@ -19,3 +21,5 @@
 - **Anchor line**: "I moved us from firefighting to a monitor→locate→fix→verify loop."
 - **Project block**: module `core/stability/` | class `CrashGuard` | design: interceptor chain + staged rollout
 - **Follow-ups**: ① prove it's your fix → version cohort + staged A/B ② Top crash capture → aggregation pipeline
+- **Strength**: A
+- **Usage**: Acme R2 2026-01-10

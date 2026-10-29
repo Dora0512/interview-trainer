@@ -9,6 +9,8 @@
 - **Anchor line**: "Exactly-once = checkpointed streaming + idempotent merge-on-key + a dedup audit as a net."
 - **Project block**: module `ingest/streaming/` | job `MergeOnKeyLoader` | design: watermark + checkpoint + idempotent merge
 - **Follow-ups**: ① late-arriving data → watermark + allowed lateness ② checkpoint store failure → replay from source offset
+- **Strength**: S
+- **Usage**: Streamline R2 2026-03-04
 
 ### Story 2: Warehouse re-modeling for cost + skew
 - **Topic**: 话题3, 话题5
@@ -19,3 +21,5 @@
 - **Anchor line**: "I fixed skew with salting + partitioning and traded normalization for a wide read-optimized mart."
 - **Project block**: module `warehouse/marts/` | design: key-salting + date partition + denormalized wide table
 - **Follow-ups**: ① why denormalize → read/write ratio ② how detect skew → stage metrics + partition size histogram
+- **Strength**: A
+- **Usage**: —

@@ -37,6 +37,8 @@ user_invocable: true
 | 定制简历索引 | `profile.md` 的 `resume_dir`/定制版 README（自动维护） |
 | 面试管线 | `data/pipeline.md` |
 
+> **数据格式**：所有读写遵循插件根目录（与 `skills/` 同级）的 `docs/workspace-schema.md`——日期一律 `YYYY-MM-DD`、状态/层级单元格只放枚举值、记录文件带 YAML front-matter、准备度/漏斗/校准按其公式重算。
+
 > 简历路径和定制版输出目录都从 `profile.md` 读取，不写死。
 
 ## 核心流程（5 步，强制按顺序执行）

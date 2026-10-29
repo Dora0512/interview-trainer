@@ -9,6 +9,8 @@
 - **Anchor line**: "I traded coarse locking for optimistic concurrency + a covering index, so correctness and latency both improved."
 - **Project block**: module `ledger/core/` | class `LedgerEntryWriter` | design: optimistic concurrency + covering index
 - **Follow-ups**: ① why optimistic over pessimistic → contention profile ② how prove correctness → invariant checks + reconciliation
+- **Strength**: S
+- **Usage**: Meridian R2 2026-02-03
 
 ### Story 2: Exactly-once payment API
 - **Topic**: 话题3, 话题4
@@ -19,3 +21,5 @@
 - **Anchor line**: "Exactly-once is at-least-once delivery plus idempotent processing plus reconciliation."
 - **Project block**: module `payments/idempotency/` | class `IdempotencyGuard` | design: idempotency key + dedup store
 - **Follow-ups**: ① key collision handling → scoped keys + TTL ② what if dedup store is down → fail-closed + reconcile
+- **Strength**: A
+- **Usage**: —
