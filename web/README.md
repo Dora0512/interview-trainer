@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interview Trainer — Web
 
-## Getting Started
+A local dashboard and AI practice room for an [interview-trainer](../README.md) workspace.
+It reads the same `profile.md` / `knowledge-base/` / `data/` files the Claude Code skills write,
+so the CLI and the browser stay in sync.
 
-First, run the development server:
+*面试训练官的本地 Web 界面：看板 + AI 练习室，读写的就是 skill 维护的同一套工作区文件。*
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd web
+npm install
+cp .env.example .env.local     # set WORKSPACE_DIR (and ANTHROPIC_API_KEY for practice)
+npm run dev                     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+With no `WORKSPACE_DIR` the app opens the fictional demos in `../examples/` so you can look around
+first. Switch workspaces from the top bar; only directories from the environment and the bundled
+demos can be selected — the browser never sends a path.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+|---|---|
+| `WORKSPACE_DIR` | Your workspace (default selection). Writable. |
+| `WORKSPACE_DIRS` | Extra workspaces for the switcher, comma-separated. |
+| `ANTHROPIC_API_KEY` | Claude API key for `/mock` and `/debrief` (or an `ant auth login` profile). |
+| `ANTHROPIC_MODEL` | Model override; default `claude-opus-5-5`. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## What's inside
 
-## Learn More
+**Dashboard** (no API key needed)
 
-To learn more about Next.js, take a look at the following resources:
+| Page | Shows |
+|---|---|
+| Overview | Readiness (core met / core total), KPI tiles, recommended next steps with copyable `/interview …` commands, funnel, recent interviews, data health |
+| Pipeline | Funnel + conversion, board by status, full table |
+| Capability | Topic × level ladder (current vs target, retest-due flags), notes, general skills, real-interview verification |
+| Weak spots | Open weak spots by root cause (knowledge gap, shallow depth, …), full tracker |
+| Calibration | Self-vs-coach delta per interview, mock score trend, mock-vs-real drift |
+| Records | Real / mock / deep-review / prep records with rendered Markdown |
+| Knowledge base | Topics, STAR stories (strength + usage), locked metrics, company styles |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The UI language follows `language` in `profile.md` (`zh` / `en`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Practice with AI** (`/mock`, `/debrief`)
 
-## Deploy on Vercel
+- Runs the plugin's own `skills/mock-interview/SKILL.md` or `skills/interview-debrief/SKILL.md` as the
+  system prompt, with your workspace files injected (prompt-cached).
+- The interviewer asks one question at a time; the progress bar reads only the phase and question
+  count, never scores.
+- **Save to workspace**: the model proposes complete new file contents, you review line diffs and pick
+  files, then they're written and re-validated against the schema. Only `data/**.md` and
+  `knowledge-base/star-stories.md` are writable; demo workspaces are read-only.
+- An unfinished session survives a page reload (stored in your browser only).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command | What it does |
+|---|---|
+| `npm run dev` / `build` / `start` | Next.js |
+| `npm test` | Parser / derivation / navigator tests (vitest), incl. all example workspaces |
+| `npm run check -- <dir…>` | Validate workspaces against [docs/workspace-schema.md](../docs/workspace-schema.md) |
+| `npm run check -- --templates ../templates --skills ..` | Validate data templates and skill path tables |
+| `npm run lint` | ESLint |
+
+## Layout
+
+```
+src/lib/workspace/   parsers (Markdown tables + front-matter), derive.ts (funnel, readiness,
+                     staleness, calibration, data alerts), navigator.ts (router's P0–P3 rules)
+src/lib/server/      workspace selection (allow-list + cookie), Claude session helpers
+src/app/             dashboard pages, /mock, /debrief, api/session, api/workspace/write
+src/components/      charts (hand-built SVG/HTML), UI primitives, practice chat
+scripts/             check-workspace.ts
+```
+
+This app targets Next.js 16 — see `AGENTS.md` before changing framework code.
