@@ -6,6 +6,7 @@ target: Top-tier consumer apps / Senior or Staff level
 resume_path: ./resume.md
 resume_dir: ./resumes/tailored
 language: en
+as_of: 2026-01-15   # freezes "today" for this fictional demo (see docs/workspace-schema.md §1)
 ---
 
 # Candidate Profile (FICTIONAL DEMO)

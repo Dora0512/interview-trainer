@@ -27,6 +27,15 @@ cp -r examples/backend-senior-demo ~/be-demo && cd ~/be-demo
 /interview mock        # run a mock against this fictional profile
 ```
 
+## See it in the dashboard
+
+```bash
+cd web && npm install && npm run dev   # opens the backend demo at http://localhost:3000
+```
+
+Every demo sets `as_of` in `profile.md` so "today" is frozen and the 30-day staleness check doesn't
+drift as real time passes. Remove that line in your own workspace.
+
 ## Notice the pattern
 
 Open any two `knowledge-base/topics.md` side by side. The **taxonomy** is completely different

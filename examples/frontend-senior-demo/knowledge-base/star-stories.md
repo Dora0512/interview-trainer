@@ -9,6 +9,8 @@
 - **Anchor line**: "I stopped re-rendering the whole canvas and started diffing only the layers that changed."
 - **Project block**: module `editor/render/` | class `SceneGraphRenderer` | design: virtualization + layer cache + memoized nodes
 - **Follow-ups**: ① why not just React.memo everything → measured, memo overhead vs win ② how measured INP → RUM p75
+- **Strength**: A
+- **Usage**: —
 
 ### Story 2: Core Web Vitals + accessibility program
 - **Topic**: 话题3, 话题4
@@ -19,3 +21,5 @@
 - **Anchor line**: "I made the critical path smaller and the app usable by keyboard/screen reader, and it moved conversion."
 - **Project block**: module `app/shell/` | design: route-split + LCP prioritization + axe CI gate
 - **Follow-ups**: ① prove +7% is perf → A/B holdout ② hydration cost trade-off → measured TBT
+- **Strength**: S
+- **Usage**: Canvas R2 2026-02-10

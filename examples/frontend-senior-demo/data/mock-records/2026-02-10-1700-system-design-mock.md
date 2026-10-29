@@ -1,3 +1,16 @@
+---
+type: mock
+date: 2026-02-10
+time: "17:00"
+style: system-design
+company: Canvas
+topics: [话题3, 话题1]
+score: 74
+self_score: 85
+top_level: L4
+pass_estimate: 68
+---
+
 # Mock Interview — 2026-02-10 (FICTIONAL DEMO)
 
 ## Basics

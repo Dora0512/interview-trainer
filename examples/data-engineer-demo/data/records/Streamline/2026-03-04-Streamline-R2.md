@@ -1,3 +1,16 @@
+---
+type: real
+company: Streamline
+round: R2
+date: 2026-03-04
+role: Sr Data Eng
+result: pass
+topics: [话题2, 话题3, 话题5]
+self_score: 3.7
+coach_score: 3.5
+stories: [Story 1]
+---
+
 # Streamline Round 2 Debrief — 2026-03-04 (FICTIONAL DEMO)
 
 > Role: Sr Data Eng · Previous round: Streamline R1 (2026-03-01) · Style: distributed compute + reliability deep-dive

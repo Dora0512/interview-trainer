@@ -1,3 +1,16 @@
+---
+type: mock
+date: 2026-03-04
+time: "16:00"
+style: data-driven
+company: Streamline
+topics: [话题2, 话题5]
+score: 72
+self_score: 76
+top_level: L4
+pass_estimate: 64
+---
+
 # Mock Interview — 2026-03-04 (FICTIONAL DEMO)
 
 ## Basics

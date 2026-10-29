@@ -49,8 +49,10 @@ user_invocable: true
 | `knowledge-base/analogy-bank.md` | 该概念的生活类比 |
 | `knowledge-base/methodologies.md` | 用户自定义的方法论（评分时引用） |
 | `knowledge-base/guides/*.md`（若有对应文件） | 子系统/领域专题，提取关键章节作为评分锚点 |
-| `data/deep-review-records/<技能号>-<技能名>-掌握度档案.md`（若存在） | 上次每关得分、未通关记录、累计学时 |
+| `data/deep-review-records/<话题N>-<简称>-mastery.md`（若存在） | 上次每关得分、未通关记录、累计学时 |
 | `data/pipeline.md` | `--company` 默认值：取当前 🟢 进行中且最近活跃的公司 |
+
+> **数据格式**：所有读写遵循插件根目录（与 `skills/` 同级）的 `docs/workspace-schema.md`——日期一律 `YYYY-MM-DD`、状态/层级单元格只放枚举值、记录文件带 YAML front-matter、准备度按其公式重算。
 
 ### Step 3：生成学程方案（用户可改写）
 
@@ -126,20 +128,22 @@ user_invocable: true
 ```
 
 #### 6.2 写入掌握度档案
-**路径**：`data/deep-review-records/<技能号>-<技能名>-掌握度档案.md`
-首次创建用模板（frontmatter：技能/目标水平/建档日期/累计学时/学程次数 + 各关状态表 + 学程历史）。已存在则更新：各关「最高得分」取 max，覆盖最近得分/日期/状态/失分点，累计学时与学程次数 +1，学程历史 append 一行。
+**路径**：`data/deep-review-records/<话题N>-<简称>-mastery.md`（`<简称>` 小写短横线）
+首次创建用模板（front-matter：`type: mastery` / `topic: 话题N` / `target: L4` / `created: YYYY-MM-DD` / `sessions` / `minutes`；正文为各关状态表 `关 | 最高得分 | 最近得分 | 日期 | 状态 | 失分点`（状态 ✅/🟡/🔲）+ 学程历史）。已存在则更新：各关「最高得分」取 max，覆盖最近得分/日期/状态/失分点，累计学时与学程次数 +1，学程历史 append 一行。
 
 #### 6.3 写入本次会话记录
-**路径**：`data/deep-review-records/<技能号>-<技能名>-<YYYY-MM-DD>.md`，存完整问答、评分细节、追问轨迹。
+**路径**：`data/deep-review-records/<话题N>-<简称>-YYYY-MM-DD.md`，front-matter：`type: deep-review` / `topic: 话题N` / `date` / `level`（整体 = 最弱关）/ `scores: {L1: 4, L2: 3, ...}`；正文存完整问答、评分细节、追问轨迹。
 
 #### 6.4 写入能力画像（`data/capability-profile.md`）
 **话题矩阵**：当前水平=本次整体（按最弱关取，**只升不降**——真实面试结果才能下调）；上次测试=今天；趋势（本次≥旧→↑，=→→，<→→不下调）；状态（达目标→🟢，未达→🟡）。
-**薄弱点追踪**（仅 <3 分的关/动态关 append）：来源标 `[deep-review-YYYY-MM-DD]`，与 debrief 写入的真实失分点区分；同子点已存在则 +1 不新增行；**不修改** debrief 写入行的来源标注。
+**准备度判定**：矩阵变动后按 schema §9 重算核心达标数 / 全部达标数 / 准备度等级。
+**薄弱点追踪**（仅 <3 分的关/动态关 append）：「话题」= 话题 ID，「根因」= 五类之一，来源标 `[deep-review-YYYY-MM-DD]`，与 debrief 写入的真实失分点区分；同子点已存在则 +1 不新增行；**不修改** debrief 写入行的来源标注。
+**格式自检**：写完后重读改动行，日期/状态/层级不合规范的列为「格式告警」。
 
 ### Step 7：错误与边界
 - 技能匹配不到：列出 topics.md 全部技能让用户选
 - 能力画像无该话题：自动 append 一行新话题（标 `当前水平=待测`）再继续
-- `--reset`：归档旧档案为 `*-archived-<日期>.md`，建新档
+- `--reset`：归档旧档案为 `<话题N>-<简称>-mastery-archived-YYYY-MM-DD.md`，建新档
 - 用户中途 `/quit` 或 `停`：保存当前进度到档案（标「中断」），下次诊断识别
 - `--only L<N>` 与最低未通关关不一致：警告"上一关 L<N-1> 未通关，建议先补；继续 yes / 跳过 no"
 - `--company` 公司在管线/风格库中不存在：警告并改用通用风格
