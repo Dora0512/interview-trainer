@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import { translator } from "@/lib/i18n";
 import { loadWorkspace } from "@/lib/workspace/load";
+import type { Lang } from "@/lib/workspace/types";
 
 export const WORKSPACE_COOKIE = "it_ws";
 
@@ -53,6 +54,9 @@ export const currentOption = cache(async (): Promise<WorkspaceOption> => {
 
 export const currentWorkspace = cache(async () => {
   const option = await currentOption();
-  const ws = await loadWorkspace(option.dir);
+  const loaded = await loadWorkspace(option.dir);
+  // UI_LANGUAGE forces the UI (and practice-room) language regardless of profile.md.
+  const forced: Lang | undefined = process.env.UI_LANGUAGE === "zh" || process.env.UI_LANGUAGE === "en" ? process.env.UI_LANGUAGE : undefined;
+  const ws = forced ? { ...loaded, profile: { ...loaded.profile, language: forced } } : loaded;
   return { ws, option, t: translator(ws.profile.language) };
 });

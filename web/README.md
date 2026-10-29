@@ -24,6 +24,7 @@ demos can be selected — the browser never sends a path.
 | `WORKSPACE_DIR` | Your workspace (default selection). Writable. |
 | `WORKSPACE_DIRS` | Extra workspaces for the switcher, comma-separated. |
 | `ANTHROPIC_API_KEY` | Claude API key for `/mock` and `/debrief` (or an `ant auth login` profile). |
+| `UI_LANGUAGE` | Force the UI language (`zh` / `en`) instead of following `profile.md`. |
 | `ANTHROPIC_MODEL` | Model override; default `claude-opus-5-5`. |
 
 ## What's inside
