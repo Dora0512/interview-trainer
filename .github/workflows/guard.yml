@@ -1,9 +1,10 @@
 name: guard
 
-# Guards the public repo against three classes of mistakes:
+# Guards the public repo against four classes of mistakes:
 #   1. Real personal / employer data accidentally committed
 #   2. Broken skill frontmatter (name / description / user_invocable)
 #   3. Invalid plugin / marketplace JSON
+#   4. Workspace data drifting from docs/workspace-schema.md (web job)
 #
 # The de-personalization scan excludes .github/ so the block-list patterns
 # in this file don't match themselves.
@@ -58,3 +59,34 @@ jobs:
           done
           if [ "$fail" -eq 0 ]; then echo "OK: all plugin.json skill paths resolve."; fi
           exit $fail
+
+  web:
+    # Builds the dashboard and validates every example workspace, the data
+    # templates and the skills' path tables against docs/workspace-schema.md.
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Workspace schema check (examples, templates, skills)
+        run: npm run check -- ../examples/*-demo --templates ../templates --skills ..
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
