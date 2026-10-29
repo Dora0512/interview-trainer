@@ -121,3 +121,26 @@ describe("schema violations are reported, not thrown", () => {
     expect(calibrationVerdict([row(0.5), row(0), row(0.3)]).verdict).toBe("calibrated");
   });
 });
+
+describe("Chinese workspace (bilingual headers)", () => {
+  it("parses Chinese headings, columns and enums", async () => {
+    const ws = await loadWorkspace(path.join(__dirname, "fixtures/zh-workspace"));
+    const problems = [...ws.issues, ...dataAlerts(ws)].filter((i) => i.severity !== "info");
+    expect(problems).toEqual([]);
+    expect(ws.profile.language).toBe("zh");
+    expect(ws.profile.lockedMetrics).toHaveLength(1);
+    expect(ws.topics.map((t) => [t.id, t.core, t.target])).toEqual([[1, true, 4], [2, true, 4], [3, false, 3]]);
+    // ⏳ R2 is scheduled, not reached
+    expect(computeFunnel(ws.pipeline.rows)).toEqual([2, 1, 0, 0, 0, 0]);
+    const views = topicViews(ws.topics, ws.capability.matrix, ws.today);
+    expect(views.find((v) => v.topic.id === 1)?.status).toBe("stale"); // 2026-03-01 → 70 days before as_of
+    expect(readiness(views, ws.profile.thresholds)).toMatchObject({ coreMet: 1, coreTotal: 2, percent: 50 });
+    expect(ws.capability.weakSpots[0]).toMatchObject({ topicId: 2, count: 2, rootCause: "vague-data", improved: false });
+    expect(ws.capability.calibration[0].delta).toBe(1);
+
+    const recs = recommend(ws, 10);
+    expect(recs[0]).toMatchObject({ priority: "P0", kind: "prep", command: "/interview prep 某司" });
+    expect(recs.some((r) => r.kind === "retest" && r.command === "/interview mock 话题1")).toBe(true);
+    expect(recs.some((r) => r.command === "/interview review-deep 话题2 --company 某司")).toBe(true);
+  });
+});

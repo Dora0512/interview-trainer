@@ -1,26 +1,202 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-heading: var(--font-sans);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  /* data-viz roles (dataviz reference palette, validated light + dark) */
+  --color-series-1: var(--series-1);
+  --color-over: var(--over);
+  --color-under: var(--under);
+  --color-grid: var(--grid);
+  --color-axis: var(--axis);
+  --color-lvl-1: var(--lvl-1);
+  --color-lvl-2: var(--lvl-2);
+  --color-lvl-3: var(--lvl-3);
+  --color-lvl-4: var(--lvl-4);
+  --color-lvl-5: var(--lvl-5);
+  --color-good: var(--good);
+  --color-warning: var(--warning);
+  --color-critical: var(--critical);
+  --color-good-text: var(--good-text);
+}
+
+:root {
+  color-scheme: light;
+  --background: #f9f9f7;
+  --foreground: #0b0b0b;
+  --card: #fcfcfb;
+  --card-foreground: #0b0b0b;
+  --popover: #fcfcfb;
+  --popover-foreground: #0b0b0b;
+  --primary: #2a78d6;
+  --primary-foreground: #ffffff;
+  --secondary: #f0efec;
+  --secondary-foreground: #0b0b0b;
+  --muted: #f0efec;
+  --muted-foreground: #52514e;
+  --accent: #e8f0fb;
+  --accent-foreground: #1c5cab;
+  --destructive: #d03b3b;
+  --border: #e1e0d9;
+  --input: #e1e0d9;
+  --ring: #2a78d6;
+  --radius: 0.625rem;
+
+  --series-1: #2a78d6;
+  --over: #e34948;
+  --under: #2a78d6;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --lvl-1: #86b6ef;
+  --lvl-2: #5598e7;
+  --lvl-3: #2a78d6;
+  --lvl-4: #1c5cab;
+  --lvl-5: #104281;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --good-text: #006300;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --background: #0d0d0d;
+    --foreground: #f0efec;
+    --card: #1a1a19;
+    --card-foreground: #f0efec;
+    --popover: #1a1a19;
+    --popover-foreground: #f0efec;
+    --primary: #3987e5;
+    --primary-foreground: #ffffff;
+    --secondary: #2c2c2a;
+    --secondary-foreground: #f0efec;
+    --muted: #2c2c2a;
+    --muted-foreground: #c3c2b7;
+    --accent: #1c2a3d;
+    --accent-foreground: #9ec5f4;
+    --destructive: #d03b3b;
+    --border: #2c2c2a;
+    --input: #383835;
+    --ring: #3987e5;
+
+    --series-1: #3987e5;
+    --over: #e66767;
+    --under: #3987e5;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --lvl-1: #184f95;
+    --lvl-2: #256abf;
+    --lvl-3: #3987e5;
+    --lvl-4: #6da7ec;
+    --lvl-5: #9ec5f4;
+    --good-text: #0ca30c;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0d0d0d;
+  --foreground: #f0efec;
+  --card: #1a1a19;
+  --card-foreground: #f0efec;
+  --popover: #1a1a19;
+  --popover-foreground: #f0efec;
+  --primary: #3987e5;
+  --primary-foreground: #ffffff;
+  --secondary: #2c2c2a;
+  --secondary-foreground: #f0efec;
+  --muted: #2c2c2a;
+  --muted-foreground: #c3c2b7;
+  --accent: #1c2a3d;
+  --accent-foreground: #9ec5f4;
+  --destructive: #d03b3b;
+  --border: #2c2c2a;
+  --input: #383835;
+  --ring: #3987e5;
+
+  --series-1: #3987e5;
+  --over: #e66767;
+  --under: #3987e5;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --lvl-1: #184f95;
+  --lvl-2: #256abf;
+  --lvl-3: #3987e5;
+  --lvl-4: #6da7ec;
+  --lvl-5: #9ec5f4;
+  --good-text: #0ca30c;
 }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* Rendered Markdown (records, company styles) */
+.prose-md {
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.prose-md h1 { font-size: 1.35rem; font-weight: 650; margin: 0 0 0.75rem; }
+.prose-md h2 { font-size: 1.1rem; font-weight: 650; margin: 1.5rem 0 0.5rem; }
+.prose-md h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.4rem; }
+.prose-md p, .prose-md ul, .prose-md ol, .prose-md blockquote { margin: 0.5rem 0; }
+.prose-md ul { list-style: disc; padding-left: 1.25rem; }
+.prose-md ol { list-style: decimal; padding-left: 1.25rem; }
+.prose-md blockquote { border-left: 3px solid var(--border); padding-left: 0.75rem; color: var(--muted-foreground); }
+.prose-md code { font-family: var(--font-mono); font-size: 0.85em; background: var(--muted); padding: 0.1em 0.3em; border-radius: 4px; }
+.prose-md pre { background: var(--muted); padding: 0.75rem; border-radius: 8px; overflow-x: auto; }
+.prose-md pre code { background: none; padding: 0; }
+.prose-md table { display: block; overflow-x: auto; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.875rem; }
+.prose-md th, .prose-md td { border: 1px solid var(--border); padding: 0.35rem 0.6rem; text-align: left; vertical-align: top; }
+.prose-md th { background: var(--muted); font-weight: 600; }
+.prose-md a { color: var(--primary); text-decoration: underline; }
+.prose-md hr { border-color: var(--border); margin: 1rem 0; }

@@ -1,65 +1,130 @@
-import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { FunnelBars } from "@/components/charts/funnel";
+import { Meter } from "@/components/charts/meter";
+import { CopyCommand } from "@/components/copy-button";
+import { IssueList, PageTitle, StatTile } from "@/components/page";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardBody, CardHeader } from "@/components/ui/card";
+import { currentWorkspace } from "@/lib/server/workspace";
+import { computeFunnel, dataAlerts, pipelineInterviews, readiness, topicViews } from "@/lib/workspace/derive";
+import { recommend } from "@/lib/workspace/navigator";
 
-export default function Home() {
+const TIER_ICON = { starting: "🔴", "in-training": "🟡", ready: "🟢", peak: "⭐" } as const;
+const STAGES = ["stage.applied", "stage.r1", "stage.r2", "stage.r3", "stage.hr", "stage.offer"];
+
+export default async function OverviewPage() {
+  const { ws, t } = await currentWorkspace();
+  const views = topicViews(ws.topics, ws.capability.matrix, ws.today);
+  const r = readiness(views, ws.profile.thresholds);
+  const funnel = computeFunnel(ws.pipeline.rows);
+  const recs = recommend(ws);
+  const interviews = pipelineInterviews(ws.pipeline.rows);
+  const realRecords = ws.records.filter((x) => x.type === "real").length;
+  const lastMock = ws.progress.at(-1);
+  const stale = views.filter((v) => v.status === "stale");
+  const issues = [...ws.issues, ...dataAlerts(ws)];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <PageTitle title={t("overview.title")} />
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="rounded-xl border bg-card px-4 py-3 sm:col-span-2">
+          <p className="text-xs text-muted-foreground">{t("overview.readiness")}</p>
+          <p className="mt-1 flex items-baseline gap-2">
+            <span className="text-5xl font-semibold tracking-tight">{r.percent}%</span>
+            <span className="text-sm">
+              <span aria-hidden>{TIER_ICON[r.tier]} </span>
+              {t(`tier.${r.tier}`)}
+            </span>
           </p>
+          <div className="mt-3">
+            <Meter percent={r.percent} thresholds={ws.profile.thresholds} label={t("overview.readiness")} />
+          </div>
+          {stale.length ? <p className="mt-1 text-xs text-muted-foreground">🕐 {t("overview.stale", { n: stale.length })}</p> : null}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <StatTile label={t("overview.coreMet")} value={`${r.coreMet} / ${r.coreTotal}`} sub={`${t("overview.allMet")} ${r.allMet} / ${r.allTotal}`} />
+        <StatTile
+          label={t("overview.interviews")}
+          value={interviews.length}
+          sub={t("overview.interviewsHint", { records: realRecords })}
+        />
+        <StatTile
+          label={t("overview.mockAvg")}
+          value={lastMock?.score ?? "—"}
+          sub={lastMock ? `${lastMock.date} · ${lastMock.change}` : undefined}
+        />
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <Card>
+          <CardHeader title={t("overview.next")} hint={t("overview.nextHint")} />
+          <CardBody>
+            <ol className="space-y-3">
+              {recs.map((rec, i) => (
+                <li key={i} className="flex gap-3">
+                  <Badge variant={rec.priority === "P0" ? "accent" : "outline"} className="mt-0.5 tabular-nums">
+                    {rec.priority}
+                  </Badge>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">{t(rec.title.key, rec.title.params)}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{t(rec.evidence.key, rec.evidence.params)}</p>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                      <CopyCommand command={rec.command} labels={{ copy: t("copy"), copied: t("copied") }} />
+                      {rec.kind === "mock" || rec.kind === "retest" || rec.kind === "debrief" ? (
+                        <Link
+                          href={rec.kind === "debrief" ? "/debrief" : `/mock?${new URLSearchParams(rec.command.includes("--weak") ? { weak: "1" } : { topic: /话题(\d+)/.exec(rec.command)?.[1] ?? "" })}`}
+                          className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                        >
+                          {rec.kind === "debrief" ? t("nav.debrief") : t("nav.mock")}
+                          <ArrowRight className="size-3" aria-hidden />
+                        </Link>
+                      ) : null}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </CardBody>
+        </Card>
+
+        <div className="space-y-4">
+          <Card>
+            <CardHeader title={t("overview.funnel")} action={<Link href="/pipeline" className="text-xs text-primary hover:underline">{t("nav.pipeline")} →</Link>} />
+            <CardBody>
+              <FunnelBars
+                stages={funnel.map((value, i) => ({ label: t(STAGES[i]), value }))}
+                conversionLabel={(pct) => t("pipeline.conversion", { pct })}
+              />
+            </CardBody>
+          </Card>
+          <Card>
+            <CardHeader title={t("overview.recent")} />
+            <CardBody>
+              <ul className="space-y-2 text-sm">
+                {interviews.slice(0, 3).map((i) => (
+                  <li key={`${i.company}-${i.round}`} className="flex items-center justify-between gap-2">
+                    <span className="min-w-0 truncate">
+                      {i.company} <span className="text-muted-foreground">{i.round}</span>
+                    </span>
+                    <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                      {i.date} · {i.result === "pass" ? "✅" : i.result === "fail" ? "❌" : "—"} {i.result ? t(`result.${i.result}`) : ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </CardBody>
+          </Card>
         </div>
-      </main>
-    </div>
+      </div>
+
+      <Card className="mt-4">
+        <CardHeader title={t("overview.health")} />
+        <CardBody>
+          {issues.length ? <IssueList issues={issues} t={t} limit={5} /> : <p className="text-sm text-muted-foreground">✅ {t("overview.healthClean")}</p>}
+        </CardBody>
+      </Card>
+    </>
   );
 }
